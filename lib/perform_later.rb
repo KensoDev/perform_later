@@ -1,4 +1,5 @@
 require 'perform_later/version'
+require 'active_record'
 require 'resque_perform_later'
 require 'resque_mailer_patch'
 require 'object_worker'
