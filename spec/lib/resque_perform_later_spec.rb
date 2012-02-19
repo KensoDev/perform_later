@@ -42,5 +42,10 @@ describe ResquePerformLater do
       args[0][:name].should == "something"
       args[0][:other].should == "something else"
     end
+
+    it "Should give me a user model back when I pass the proper string" do
+      args = ResquePerformLater.args_from_resque("AR:User:#{user.id}")
+      args[0].should == user
+    end
   end
 end
