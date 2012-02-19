@@ -2,6 +2,7 @@ require "perform_later"
 require "rspec"
 require "support/database_connection"
 require "support/database_models"
+require "redis"
 
 RSpec.configure do |config|
   config.mock_with :rspec
@@ -42,8 +43,6 @@ RSpec.configure do |config|
     
     uri = URI.parse("http://localhost:9726")
     $redis = Redis.new(host: uri.host, port: uri.port)
-    
-    AttributeCache::StorageProviders.Redis = $redis
   end
     
   config.after(:suite) do
