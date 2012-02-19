@@ -13,12 +13,12 @@ describe ResquePerformLater do
 
     it "should convert a hash into YAML string so that Resque will be able to JSON convert it" do
       hash = {name: "something", other: "something else"}
-      ResquePerformLater.args_to_resque(hash).class.name.should == "String"
+      ResquePerformLater.args_to_resque(hash)[0].class.name.should == "String"
     end
 
     it "should be able to load a yaml from the string and translate it into the same hash again" do
       hash = {name: "something", other: "something else"}
-      yaml = ResquePerformLater.args_to_resque(hash)
+      yaml = ResquePerformLater.args_to_resque(hash)[0]
 
       loaded_yaml = YAML.load(yaml)
       
@@ -28,6 +28,6 @@ describe ResquePerformLater do
   end
 
   context "args from resque" do
-    
+
   end
 end
