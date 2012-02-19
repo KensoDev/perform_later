@@ -28,6 +28,6 @@ describe ResquePerformLater do
   end
 
   context "args from resque" do
-
+    
   end
 end
