@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = PerformLater::VERSION
   s.authors     = ["Avi Tzurel"]
   s.email       = ["avi@kensodev.com"]
-  s.homepage    = ""
+  s.homepage    = "http://www.github.com/kensodev/perform_later"
   s.summary     = %q{Queue any method in any class or instance with no need for additional Worker class and no extra code}
   s.description = %q{Queue any method in any class or instance with no need for additional Worker class and no extra code}
 
