@@ -15,7 +15,6 @@ You can call the `perform_later` method on any object or active record instance
 ```ruby
 @user = User.find(1)
 @user.perform_later(:queue_name, :method_name, args)
-
 ```
 
 You can also call objects on the User object itself
