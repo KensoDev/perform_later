@@ -25,9 +25,22 @@ describe ResquePerformLater do
       loaded_yaml[:name].should == "something"
       loaded_yaml[:other].should == "something else"
     end
+
+    it "should convert a class to the proper string representation" do
+      klass = User
+      ResquePerformLater.args_to_resque(klass)[0].should == "CLASS:User"
+    end
   end
 
   context "args from resque" do
-    
+    it "should give me a hash back when I pass a yaml representation of it" do
+      hash = {name: "something", other: "something else"}   
+      yaml = hash.to_yaml
+
+      args = ResquePerformLater.args_from_resque(yaml)
+      args[0].class.name.should == "Hash"
+      args[0][:name].should == "something"
+      args[0][:other].should == "something else"
+    end
   end
 end
