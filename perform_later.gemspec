@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Avi Tzurel"]
   s.email       = ["avi@kensodev.com"]
   s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.summary     = %q{Queue any method in any class or instance with no need for additional Worker class and no extra code}
+  s.description = %q{Queue any method in any class or instance with no need for additional Worker class and no extra code}
 
   s.rubyforge_project = "perform_later"
 
