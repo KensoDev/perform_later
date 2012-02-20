@@ -1,4 +1,6 @@
-# Why do now what you can perform_later?
+![Anything you can do, I can do later](http://f.cl.ly/items/1C3X0s1h0925390L3T40/Screen%20Shot%202012-02-20%20at%206.18.48%20PM.png)
+
+[Image Credit](http://http://www.zazzle.com/anything_you_can_do_i_can_do_later_tshirt-235016986673229502)
 
 ## Overview
 Perform later is a gem meant to work with the [Resque](http://github.com/defunkt/resque) queue system.
@@ -7,7 +9,7 @@ The gem handles queuing tasks without the need to have additional "Worker" class
 
 The gem really simplifies queuing tasks, no need for extra workers and you may never need to change your code.
 
-The gem will "translate" objects to a serializable (suitable for json) versions of those classes.
+The gem will "translate" objects to a serializable (suitable for JSON) versions of those classes.
 
 ### Usage
 You can call the `perform_later` method on any object or active record instance
