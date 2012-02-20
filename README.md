@@ -11,6 +11,18 @@ The gem really simplifies queuing tasks, no need for extra workers and you may n
 
 The gem will "translate" objects to a serializable (suitable for JSON) versions of those classes.
 
+## Why?
+*Why* should you queue something for later?
+
+You should queue something whenever the method handles some heavy lifting, some timely actions like API, 3rd party HTTP requests and more.
+
+The basic logic is that whatever you don't need to do NOW, you should do later, this will make your site faster and the users will feel it.
+
+## Real life use case
+At [Gogobot](http://gogobot.com) whenever you post a review, there's major score calculation going on, this can take 20-30 seconds sometimes.
+
+The user should not wait for this on submit, it can be queued into later execution.
+
 ### Usage
 You can call the `perform_later` method on any object or active record instance
 
