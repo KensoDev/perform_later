@@ -6,7 +6,6 @@ class ResquePerformLater
   }
 
   # inspired by DelayedJob
-
   CLASS_STRING_FORMAT = /^CLASS\:([A-Z][\w\:]+)$/
   AR_STRING_FORMAT    = /^AR\:([A-Z][\w\:]+)\:(\d+)$/
   YAML_STRING_FORMAT  = /\A---/

@@ -1,7 +1,10 @@
 class ObjectWorker
-  # @param klass_name [The class name that you should work on]
-  # @param method [method you should send on the class]
-  # @param args [method args]
+  # Public: perform.
+  #
+  # klass_name - name of the class (string).
+  # method - method name, this method will be called on the object.
+  # *args - array of arguments to send to the method
+  #
   def self.perform(klass_name, method, *args)
     args = ResquePerformLater.args_from_resque(args)
     

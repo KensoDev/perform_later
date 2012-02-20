@@ -4,14 +4,14 @@ module ActiveRecordPerformLater
       if ResquePerformLater.config['enabled']
         args = ResquePerformLater.args_to_resque(args)
         
-        Resque::Job.create( queue,
-                            ActiveRecordWorker,
-                            self.class.name,
-                            self.id,
-                            method,
-                            *args)
+        Resque::Job.create(queue,
+          ActiveRecordWorker,
+          self.class.name,
+          self.id,
+          method,
+          *args)
       else
-        self.send( method, *args )
+        self.send(method, *args)
       end
     end
   end
