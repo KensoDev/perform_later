@@ -5,9 +5,9 @@ Perform later is a gem meant to work with the [Resque](http://github.com/defunkt
 
 The gem handles queuing tasks without the need to have additional "Worker" classes or with any changes to your original model/object code base.
 
-The gem really simplifies queing tasks, no need for extra workers and you may never need to change your code.
+The gem really simplifies queuing tasks, no need for extra workers and you may never need to change your code.
 
-The gem will "translate" objects to a serializable (suitable for json) versions of tha classes.
+The gem will "translate" objects to a serializable (suitable for json) versions of those classes.
 
 ### Usage
 You can call the `perform_later` method on any object or active record instance
@@ -69,7 +69,7 @@ Be as descriptive as you can in the pull request description, just to be clear w
 
 ## TODO
 1. Add the ability to perform_later without a queue provided (will go to a default queue - configurable)
-2. add generator for the configuration file
+2. Add generator for the configuration file
 
 ## Ideas
-1. add the ability that a method will be tagged as "perform_later", this way you can call the method by name and it will be queued
+1. Add the ability that a method will be tagged as "perform_later", this way you can call the method by name and it will be queued
