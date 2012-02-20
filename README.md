@@ -12,6 +12,16 @@ The gem will "translate" objects to a serializable (suitable for json) versions 
 ### Usage
 You can call the `perform_later` method on any object or active record instance
 
+the `perform_later` method has 3 params
+
+```ruby
+:queue_name #The queue in which this task will be in
+:method_name #the method that will be called on the object
+args #array of arguments
+```
+
+### Samples
+
 ```ruby
 @user = User.find(1)
 @user.perform_later(:queue_name, :method_name, args)
@@ -22,6 +32,8 @@ You can also call objects on the User object itself
 ```ruby
 User.perform_later(:queue_name, :method_name, args)
 ```
+
+
 
 
 
