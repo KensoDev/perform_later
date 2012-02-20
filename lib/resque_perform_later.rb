@@ -57,9 +57,8 @@ class ResquePerformLater
     if File.exists?(DEFAULT_CONFIG_PATH)
       config = YAML.load(ERB.new(IO.read(DEFAULT_CONFIG_PATH)).result)[self.env_str]
     end
-
+    
     config = {}.merge(DEFAULT_CONFIG || {}).merge(config || {})
-
     @@_config = config
   end
 end
