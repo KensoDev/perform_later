@@ -7,8 +7,6 @@ Perform later is a gem meant to work with the [Resque](http://github.com/defunkt
 
 The gem handles queuing tasks without the need to have additional "Worker" classes or with any changes to your original model/object code base.
 
-The gem really simplifies queuing tasks, no need for extra workers and you may never need to change your code.
-
 The gem will "translate" objects to a serializable (suitable for JSON) versions of those classes.
 
 ## Why?
