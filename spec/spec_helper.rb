@@ -7,6 +7,10 @@ require "redis"
 RSpec.configure do |config|
   config.mock_with :rspec
 
+  config.after(:each) do
+    $redis.flushdb
+  end
+
   config.before(:all) do
     dir = File.join(File.dirname(__FILE__), 'support/db')
     
