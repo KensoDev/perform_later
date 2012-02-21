@@ -25,6 +25,4 @@ describe ActiveRecordPerformLater do
     user.should_receive(:full_name)
     user.perform_later(:generic, :full_name)
   end
-
-
 end
