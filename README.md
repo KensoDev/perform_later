@@ -1,7 +1,5 @@
 ![image](https://secure.travis-ci.org/KensoDev/perform_later.png)
 
-![Anything you can do, I can do later](http://f.cl.ly/items/1C3X0s1h0925390L3T40/Screen%20Shot%202012-02-20%20at%206.18.48%20PM.png)
-
 [Image Credit](http://http://www.zazzle.com/anything_you_can_do_i_can_do_later_tshirt-235016986673229502)
 
 ## Overview
