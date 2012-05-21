@@ -19,7 +19,20 @@ describe Resque::Plugins::Later::Method do
   end
 
   context "loner" do
+    before(:each) do 
+      PerformLater.config.stub!(:enabled?).and_return(true)
+      User.later :lonely_long_running_method, loner: true
+    end
 
+    it "should only add a single method to the queue, since the config is with a loner" do
+      user = User.create
+      user.lonely_long_running_method
+      user.lonely_long_running_method
+      user.lonely_long_running_method
+      user.lonely_long_running_method
+      user.lonely_long_running_method
+      Resque.peek(:generic, 0, 20).length.should == 1  
+    end
   end
 
   context "disabled" do

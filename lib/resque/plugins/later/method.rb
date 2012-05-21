@@ -12,8 +12,11 @@ module Resque::Plugins::Later::Method
         klass          = PerformLater::Workers::ActiveRecord::Worker
         klass          = PerformLater::Workers::ActiveRecord::LoneWorker if loner
 
-        args = PerformLater::ArgsParser.args_to_resque(args)
-        aaa = Resque::Job.create(queue, klass, send(:class).name, send(:id), "now_#{method_name}", args)
+        if loner
+          return "QUEUED!" if Resque.enqueued_in? queue, klass, args
+        end
+        
+        Resque::Job.create(queue, klass, send(:class).name, send(:id), "now_#{method_name}", args)
       end
     end
   end
