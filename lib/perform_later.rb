@@ -1,5 +1,6 @@
 require 'active_support/dependencies'
 require 'perform_later/version'
+require 'perform_later/config'
 require 'resque'
 require 'resque-loner'
 require 'perform_later/args_parser'
@@ -11,14 +12,8 @@ require 'perform_later/workers/active_record/worker'
 require 'perform_later/workers/active_record/lone_worker'
 
 module PerformLater
-  extend self
-
-  def enabled=(value)
-    @enabled = value
-  end
-
-  def enabled?
-    @enabled || false
+  def self.config
+    PerformLater::Config
   end
 end
 

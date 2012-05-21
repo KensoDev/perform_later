@@ -1,7 +1,7 @@
 module PerformLater
   module Workers
     module ActiveRecord
-      class Worker
+      class LoneWorker
         include Resque::Plugins::UniqueJob
         
         def self.perform(klass, id, method, *args)
