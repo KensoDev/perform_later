@@ -6,7 +6,7 @@ class ObjectWorker
   # *args - array of arguments to send to the method
   #
   def self.perform(klass_name, method, *args)
-    args = ResquePerformLater.args_from_resque(args)
+    args = PerformLater::ArgsParser.args_from_resque(args)
     
     klass_name.constantize.send(method, *args)
   end

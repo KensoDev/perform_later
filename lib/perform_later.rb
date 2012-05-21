@@ -1,7 +1,7 @@
 require 'active_support/dependencies'
 require 'perform_later/version'
+require 'perform_later/args_parser'
 require 'active_record'
-require 'resque_perform_later'
 require 'resque_mailer_patch'
 require 'object_worker'
 require 'object_perform_later'

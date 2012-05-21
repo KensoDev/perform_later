@@ -6,7 +6,7 @@ class ActiveRecordWorker
   # *args - array of arguments to send to the method
   #
 	def self.perform(klass, id, method, *args)
-	  args = ResquePerformLater.args_from_resque(args)
+	  args = PerformLater::ArgsParser.args_from_resque(args)
 	  runner_klass = eval(klass)
 	  
 	  record = runner_klass.where(:id => id).first
