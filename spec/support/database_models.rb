@@ -1,7 +1,13 @@
 class User < ActiveRecord::Base
-  def full_name
-    "Avi Tzurel"
+  def long_running_method
+    true
   end
+  later :long_running_method
+
+  def lonely_long_running_method
+    true
+  end
+  later :lonely_long_running_method, :loner => true
 
   def self.get_metadata
     {}

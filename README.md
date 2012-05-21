@@ -1,13 +1,13 @@
-![Anything you can do, I can do later](http://f.cl.ly/items/1C3X0s1h0925390L3T40/Screen%20Shot%202012-02-20%20at%206.18.48%20PM.png)
-
-[Image Credit](http://http://www.zazzle.com/anything_you_can_do_i_can_do_later_tshirt-235016986673229502)
+[![Build Status](https://secure.travis-ci.org/KensoDev/perform_later.png)](https://secure.travis-ci.org/KensoDev/perform_later)
 
 ## Overview
 Perform later is a gem meant to work with the [Resque](http://github.com/defunkt/resque) queue system.
 
-The gem handles queuing tasks without the need to have additional "Worker" classes or with any changes to your original model/object code base.
+The gem handles queuing tasks without the need to have additional "Worker" classes.
 
 The gem will "translate" objects to a serializable (suitable for JSON) versions of those classes.
+
+The Gem also support a workflow similar to `async_method`, meaning you can just call method on your objects and configure those methods to be queued by default. No worries, you can always call the method in `now` mode, which will execute the method in sync.
 
 ## Why?
 *Why* should you queue something for later?
@@ -45,28 +45,16 @@ You can also call objects on the User object itself
 User.perform_later(:queue_name, :method_name, args)
 ```
 
+
+
 ## Configuration
-perform_later has a single configuration file, you should put the file in `config/resque_perform_later.yml`
+You can configure `perform_later` exactly as you configure your rails app.
+
+Inside your `#{env}.rb` file (for example development.rb)
 
 ```ruby
-defaults: &DEFAULTS
-  enabled: true
-
-development:
-  <<: *DEFAULTS
-
-test:
-  enabled: false
-
-production:
-  <<: *DEFAULTS
-
-staging:
-  <<: *DEFAULTS
+config.perform_later.enabled = true # this will default to false
 ```
-
-### Configuration explained
-The config is simple, either it's enabled or it's not, and you can set the environment which you want to enable in
 
 ## What happens in test when it's disabled
 In test mode, the method is not queued, it's being sent immediately on the object, this way your test work completely normal and you don't need to worry about Resque or Redis in your tests, this is very useful
@@ -81,7 +69,3 @@ Be as descriptive as you can in the pull request description, just to be clear w
 
 ## TODO
 1. Add the ability to perform_later without a queue provided (will go to a default queue - configurable)
-2. Add generator for the configuration file
-
-## Ideas
-1. Add the ability that a method will be tagged as "perform_later", this way you can call the method by name and it will be queued
