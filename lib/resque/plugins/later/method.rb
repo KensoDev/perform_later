@@ -1,7 +1,7 @@
 module Resque::Plugins::Later::Method
   extend ActiveSupport::Concern
 
-  module ClassMethod
+  module ClassMethods
     def later(method_name, opts={})
       alias_method :"now_#{method_name}", method_name
       return unless PerformLater.enabled?
