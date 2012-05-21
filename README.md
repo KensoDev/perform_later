@@ -5,9 +5,11 @@
 ## Overview
 Perform later is a gem meant to work with the [Resque](http://github.com/defunkt/resque) queue system.
 
-The gem handles queuing tasks without the need to have additional "Worker" classes or with any changes to your original model/object code base.
+The gem handles queuing tasks without the need to have additional "Worker" classes.
 
 The gem will "translate" objects to a serializable (suitable for JSON) versions of those classes.
+
+The Gem also support a workflow similar to `async_method`, meaning you can just call method on your objects and configure those methods to be queued by default. No worries, you can always call the method in `now` mode, which will execute the method in sync.
 
 ## Why?
 *Why* should you queue something for later?
@@ -44,6 +46,8 @@ You can also call objects on the User object itself
 ```ruby
 User.perform_later(:queue_name, :method_name, args)
 ```
+
+
 
 ## Configuration
 perform_later has a single configuration file, you should put the file in `config/resque_perform_later.yml`
