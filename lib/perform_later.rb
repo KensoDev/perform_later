@@ -8,5 +8,14 @@ require 'active_record_worker'
 require 'active_record_perform_later'
 
 module PerformLater
-  
+  extend self
+
+  def enabled=(value)
+    @enabled = value
+  end
+
+  def enabled?
+    @enabled || false
+  end
+
 end
