@@ -1,3 +1,5 @@
+require "net/http"
+require "uri"
 require "perform_later"
 require "rspec"
 require "support/database_connection"

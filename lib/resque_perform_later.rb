@@ -1,9 +1,5 @@
 class ResquePerformLater
   APP_ROOT = File.expand_path((defined?(Rails) && Rails.root.to_s.length > 0) ? Rails.root : ".") unless defined?(APP_ROOT)
-  DEFAULT_CONFIG_PATH = File.join(APP_ROOT, 'config', 'resque_perform_later.yml')
-  DEFAULT_CONFIG = {
-    'enabled' => true
-  }
 
   # inspired by DelayedJob
   CLASS_STRING_FORMAT = /^CLASS\:([A-Z][\w\:]+)$/
@@ -39,26 +35,13 @@ class ResquePerformLater
   end
 
   private
-  def self.env_str
-    if defined? Rails
-      Rails.env.to_s
-    elsif defined? Rack
-      Rack.env.to_s
-    else
-      'production'
+    def self.env_str
+      if defined? Rails
+        Rails.env.to_s
+      elsif defined? Rack
+        Rack.env.to_s
+      else
+        'production'
+      end
     end
-  end
-
-  @@_config = nil
-
-  def self.config
-    return @@_config if @@_config && self.env_str != 'development'
-
-    if File.exists?(DEFAULT_CONFIG_PATH)
-      config = YAML.load(ERB.new(IO.read(DEFAULT_CONFIG_PATH)).result)[self.env_str]
-    end
-    
-    config = {}.merge(DEFAULT_CONFIG || {}).merge(config || {})
-    @@_config = config
-  end
 end

@@ -1,7 +1,7 @@
 module ActiveRecordPerformLater
   module InstanceMethods
     def perform_later(queue, method, *args)
-      if ResquePerformLater.config['enabled']
+      if PerformLater.enabled?
         args = ResquePerformLater.args_to_resque(args)
         
         Resque::Job.create(queue,
