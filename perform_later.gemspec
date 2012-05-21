@@ -19,11 +19,14 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   # specify any dependencies here; for example:
-  s.add_dependency 'activerecord', ">= 3.0.0"
-  s.add_dependency 'redis'
+  s.add_dependency 'rails', '~> 3.0'
   s.add_dependency 'resque'
+  s.add_dependency 'resque-loner'
+  s.add_dependency 'redis'
 
   s.add_development_dependency 'rake'
+  s.add_development_dependency 'rspec-rails'
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'sqlite3'
+  s.add_development_dependency 'spork-rails'
 end

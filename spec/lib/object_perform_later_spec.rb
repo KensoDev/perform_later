@@ -11,6 +11,10 @@ describe ObjectPerformLater do
     Resque.peek(:generic, 0, 20).length.should == 1
   end
 
+  it "should respond to :later method" do
+    
+  end
+
   it "should send the method on the class when the config is disabled" do
     PerformLater.stub!(:enabled?).and_return(false)
     
