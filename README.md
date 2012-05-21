@@ -1,6 +1,4 @@
-![image](https://secure.travis-ci.org/KensoDev/perform_later.png)
-
-[Image Credit](http://http://www.zazzle.com/anything_you_can_do_i_can_do_later_tshirt-235016986673229502)
+[![Build Status](https://secure.travis-ci.org/KensoDev/perform_later.png)](https://secure.travis-ci.org/KensoDev/perform_later)
 
 ## Overview
 Perform later is a gem meant to work with the [Resque](http://github.com/defunkt/resque) queue system.
