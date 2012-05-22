@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe PerformLater do
-  # Probably the simplest spec ever but still... ;)
+  before(:each) { PerformLater.config.enabled = false }
 
-  it "should set the perform later mode to enabled" do
-    PerformLater.config.enabled?.should be_true
-    PerformLater.config.enabled = false
-    PerformLater.config.enabled?.should == false
+  it "should set the perform later mode" do
+    PerformLater.config.enabled?.should be_false
+    PerformLater.config.enabled = true
+    PerformLater.config.enabled?.should == true
   end
 end
