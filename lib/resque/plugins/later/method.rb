@@ -31,7 +31,7 @@ module Resque::Plugins::Later::Method
       args = PerformLater::ArgsParser.args_to_resque(args)
       Resque::Job.create(queue, PerformLater::Workers::ActiveRecord::Worker, self.class.name, self.id, method, *args)
     else
-      self.send(method, *args)
+      self.send(method, args)
     end
   end
 end

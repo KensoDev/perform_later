@@ -1,11 +1,12 @@
 module PerformLater
   class PayloadHelper
     def self.get_digest(klass, method, *args)
-      puts [klass, method, args]
-      digest = Digest::MD5.hexdigest({:class => klass, :method => method, :args => args.flatten}.to_s)
+      args = args.flatten
       
-      puts "Digest is: #{digest}"
+      digest = Digest::MD5.hexdigest({:class => klass, :method => method, :args => args}.to_s)
+      puts [{ :class => klass, :method => method, :args => args }.to_s]
 
+      puts "Digest is: #{digest}"
       digest
     end
   end

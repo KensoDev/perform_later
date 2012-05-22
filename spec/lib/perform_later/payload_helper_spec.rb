@@ -10,10 +10,11 @@ describe PerformLater::PayloadHelper do
 
       digest = Digest::MD5.hexdigest({ :class => "DummyClass", 
         :method => :some_method, 
-        :args => [1, 2, 3, "AR:User:#{user.id}"]
+        :args => ["AR:User:#{user.id}"]
         }.to_s)
 
-      args = PerformLater::ArgsParser.args_to_resque(1, 2, 3, user)
+      args = PerformLater::ArgsParser.args_to_resque(user)
+      puts args
       subject.get_digest("DummyClass", :some_method, args).should == digest
     end
   end

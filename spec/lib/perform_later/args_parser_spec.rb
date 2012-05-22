@@ -13,12 +13,12 @@ describe PerformLater::ArgsParser do
     end
 
     it "should convert a hash into YAML string so that Resque will be able to JSON convert it" do
-      hash = {name: "something", other: "something else"}
+      hash = { name: "something", other: "something else" }
       subject.args_to_resque(hash)[0].class.name.should == "String"
     end
 
     it "should be able to load a yaml from the string and translate it into the same hash again" do
-      hash = {name: "something", other: "something else"}
+      hash = { name: "something", other: "something else" }
       yaml = subject.args_to_resque(hash)[0]
 
       loaded_yaml = YAML.load(yaml)
@@ -35,7 +35,7 @@ describe PerformLater::ArgsParser do
 
   context "args from resque" do
     it "should give me a hash back when I pass a yaml representation of it" do
-      hash = {name: "something", other: "something else"}   
+      hash = { name: "something", other: "something else" }
       yaml = hash.to_yaml
 
       args = subject.args_from_resque(yaml)
