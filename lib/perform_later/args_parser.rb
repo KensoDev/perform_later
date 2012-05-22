@@ -7,7 +7,7 @@ module PerformLater
     AR_STRING_FORMAT    = /^AR\:([A-Z][\w\:]+)\:(\d+)$/
     YAML_STRING_FORMAT  = /\A---/
 
-    def self.args_to_resque(*args)
+    def self.args_to_resque(args)
       args = args.map { |o|
         case o
           when ActiveRecord::Base
@@ -22,7 +22,7 @@ module PerformLater
       } if args
     end
     
-    def self.args_from_resque(*args)
+    def self.args_from_resque(args)
       args = args.map { |o|
         if o
           case o
