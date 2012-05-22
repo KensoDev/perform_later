@@ -4,7 +4,7 @@ module PerformLater
       class LoneWorker
         def self.perform(klass, id, method, args)
           # Remove the loner flag from redis
-          digest = PerformLater::PayloadHelper.get_digest(klass, method_name, args)
+          digest = PerformLater::PayloadHelper.get_digest(klass, method, args)
           Resque.redis.del(digest)
 
           args = PerformLater::ArgsParser.args_from_resque(args)
