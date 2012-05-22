@@ -27,7 +27,7 @@ You can configure `perform_later` exactly as you configure your rails app.
 Inside your `#{env}.rb` file (for example development.rb)
 
 ```ruby
-config.perform_later.enabled = false # this will default to true if unset
+config.perform_later.enabled = true # this will default to false if unset
 ```
 
 ## Usage
