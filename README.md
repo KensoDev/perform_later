@@ -96,6 +96,14 @@ If you want object methods to be queued, you will have to use the `perform_later
 	
 	SomeClass.perform_later(:queue_name, :some_heavy_lifting_method)
 	SomeClass.perform_later(:queue_name, :some_more_heavy_lifting, user_id)
+	
+
+```
+
+If you want the method to be a loner (only a single instance in the queue), you will need to use the `perform_later!` method.
+
+```ruby
+	SomeClass.perform_later!(:queue_name, :some_more_heavy_lifting, user_id)
 ```
 
 ## The params parser
