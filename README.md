@@ -65,14 +65,14 @@ config.perform_later.enabled = true # this will default to false if unset
 	u.lonely_long_running_method # Method will be queued into the :some_queue_name queue, only a single instance of this method can exist in the queue.
 ```
 
-### Objects/Classes
-
 You can of course choose to run the method off the queue, just prepend `now_` to the method name and it will be executed in sync.
 
 ```ruby
 	u = User.find(some_user_id)
 	u.now_long_running_method
 ```
+
+### Objects/Classes
 
 If you want object methods to be queued, you will have to use the `perform_later` special method.
 
