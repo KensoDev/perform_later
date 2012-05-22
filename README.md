@@ -29,12 +29,12 @@ If you are using bundler, simply add
 
 
 ## Configuration
-You can configure `perform_later` exactly as you configure your rails app.
-
-Inside your `#{env}.rb` file (for example development.rb)
+In an initializer, all you need to say is whether you want perform later to be enabled or not, typically, it will be something like this
 
 ```ruby
-config.later.enabled = true # this will default to false if unset
+unless Rails.env.test?
+  config.later.enabled = true # this will default to false if unset
+end
 ```
 
 ## Usage
