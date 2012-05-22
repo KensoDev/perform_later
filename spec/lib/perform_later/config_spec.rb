@@ -1,11 +1,11 @@
 require 'perform_later/config'
 
 describe PerformLater::Config do
-  subject { PerformLater::Config }
-  
-  it "should set the perform later mode to enabled" do
-    subject.enabled?.should be_false
-    subject.enabled = true
-    subject.enabled?.should == true
+  before(:each) { PerformLater.config.enabled = false }
+
+  it "should set the perform later mode" do
+    PerformLater.config.enabled?.should be_false
+    PerformLater.config.enabled = true
+    PerformLater.config.enabled?.should == true
   end
 end
