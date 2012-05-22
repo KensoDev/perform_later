@@ -9,7 +9,7 @@ describe PerformLater::PayloadHelper do
       user = User.create
 
       digest = Digest::MD5.hexdigest({ :class => "DummyClass", 
-        :method => :some_method, 
+        :method => :some_method.to_s, 
         :args => ["AR:User:#{user.id}"]
         }.to_s)
 
