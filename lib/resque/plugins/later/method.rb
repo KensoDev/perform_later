@@ -11,9 +11,12 @@ module Resque::Plugins::Later::Method
         queue          = opts.fetch(:queue, :generic)
         klass          = PerformLater::Workers::ActiveRecord::Worker
         klass          = PerformLater::Workers::ActiveRecord::LoneWorker if loner
+        args           = PerformLater::ArgsParser.args_to_resque(args)
+        digest         = Digest::MD5.hexdigest({:class => klass, :args => args}.to_s)
 
         if loner
-          return "QUEUED!" if Resque.enqueued_in? queue, klass, args
+          return "EXISTS!" unless Resque.redis.get(digest).blank?
+          Resque.redis.set(digest, 'EXISTS')
         end
         
         Resque::Job.create(queue, klass, send(:class).name, send(:id), "now_#{method_name}", args)

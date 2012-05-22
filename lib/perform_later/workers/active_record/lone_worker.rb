@@ -2,9 +2,11 @@ module PerformLater
   module Workers
     module ActiveRecord
       class LoneWorker
-        include Resque::Plugins::UniqueJob
-        
         def self.perform(klass, id, method, *args)
+          # Remove the loner flag from redis
+          digest = Digest::MD5.hexdigest({:class => klass, :args => args}.to_s)
+          Resque.redis.del(digest)
+
           args = PerformLater::ArgsParser.args_from_resque(args)
           runner_klass = eval(klass)
           

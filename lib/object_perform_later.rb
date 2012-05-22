@@ -1,11 +1,19 @@
 module ObjectPerformLater
 
   def perform_later(queue, method, *args)
+    args = PerformLater::ArgsParser.args_to_resque(args)
+
     worker = PerformLater::Workers::Objects::Worker
     perform_later_enqueue(worker, queue, method, args)
   end
 
   def perform_later!(queue, method, *args)
+    args = PerformLater::ArgsParser.args_to_resque(args)
+    digest = Digest::MD5.hexdigest({:class => self.name, :args => args}.to_s)
+
+    return "EXISTS!" unless Resque.redis.get(digest).blank?
+    Resque.redis.set(digest, 'EXISTS')
+
     worker = PerformLater::Workers::Objects::LoneWorker
     perform_later_enqueue(worker, queue, method, args)
   end
@@ -13,7 +21,6 @@ module ObjectPerformLater
   private 
     def perform_later_enqueue(worker, queue, method, args)
       if PerformLater.config.enabled?
-        args = PerformLater::ArgsParser.args_to_resque(args)
         Resque::Job.create(queue, worker, self.name, method, *args)
       else
         self.send(method, *args)
