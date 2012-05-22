@@ -2,7 +2,11 @@ require 'spec_helper'
 
 class DummyClass 
   def self.do_something_really_heavy
-    
+        
+  end
+
+  def self.do_something_with_string(value)
+    value
   end
 end
 
@@ -36,5 +40,11 @@ describe ObjectPerformLater do
     Resque.peek(:generic, 0, 20).length.should == 1
   end
 
-
+  describe :perform_later! do
+    it "should pass the correct value (String)" do
+      PerformLater.config.stub!(:enabled?).and_return(false)
+      DummyClass.should_receive(:do_something_with_string).with("Avi Tzurel")
+      DummyClass.perform_later!(:generic, :do_something_with_string, "Avi Tzurel")  
+    end
+  end
 end

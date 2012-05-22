@@ -20,9 +20,10 @@ module ObjectPerformLater
   private 
     def perform_later_enqueue(worker, queue, method, args)
       if PerformLater.config.enabled?
-        Resque::Job.create(queue, worker, self.name, method, args)
+        Resque::Job.create(queue, worker, self.name, method, *args)
       else
-        self.send(method, args)
+        args = PerformLater::ArgsParser.args_from_resque(args)
+        self.send(method, *args)
       end  
     end
 end

@@ -58,6 +58,22 @@ describe Resque::Plugins::Later::Method do
     user.should respond_to(:now_long_running_method)
   end
 
+  describe :perform_later! do
+    it "should send the correct params on the method (with hash)" do
+      PerformLater.config.stub!(:enabled?).and_return(false)
+       user = User.create
+       user.should_receive(:method_with_hash_as_option).with({:some_option => "Brown fox"})
+       user.perform_later!(:generic, :method_with_hash_as_option, :some_option => "Brown fox")
+    end
+
+    it "should send the correct params on the method (with integer)" do
+      PerformLater.config.stub!(:enabled?).and_return(false)
+       user = User.create
+       user.should_receive(:method_with_integer_option).with(1).and_return(1)
+       user.perform_later!(:generic, :method_with_integer_option, 1)
+    end 
+  end
+
 
 
   

@@ -13,4 +13,13 @@ class User < ActiveRecord::Base
     # Your code here
   end
   later :lonely_long_running_method, :loner => true, queue: :some_queue_name
+
+  def method_with_hash_as_option(options = {})
+    options[:some_option]
+  end
+
+  def method_with_integer_option(integer)
+    integer
+  end
+
 end
