@@ -1,5 +1,4 @@
 module ObjectPerformLater
-
   def perform_later(queue, method, *args)
     args = PerformLater::ArgsParser.args_to_resque(args)
 
@@ -9,8 +8,8 @@ module ObjectPerformLater
 
   def perform_later!(queue, method, *args)
     args = PerformLater::ArgsParser.args_to_resque(args)
-    digest = Digest::MD5.hexdigest({:class => self.name, :args => args}.to_s)
-
+    
+    digest = PerformLater::PayloadHelper.get_digest(self.name, method, args)
     return "EXISTS!" unless Resque.redis.get(digest).blank?
     Resque.redis.set(digest, 'EXISTS')
 

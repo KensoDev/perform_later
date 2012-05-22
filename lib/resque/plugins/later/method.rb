@@ -12,10 +12,10 @@ module Resque::Plugins::Later::Method
         klass          = PerformLater::Workers::ActiveRecord::Worker
         klass          = PerformLater::Workers::ActiveRecord::LoneWorker if loner
         args           = PerformLater::ArgsParser.args_to_resque(args)
-        digest         = Digest::MD5.hexdigest({:class => klass, :args => args}.to_s)
+        digest         = PerformLater::PayloadHelper.get_digest(klass, method_name, args)
 
         if loner
-          return "EXISTS!" unless Resque.redis.get(digest).blank?
+          return "AR EXISTS!" unless Resque.redis.get(digest).blank?
           Resque.redis.set(digest, 'EXISTS')
         end
         
