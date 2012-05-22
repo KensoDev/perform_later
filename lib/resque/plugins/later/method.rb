@@ -50,7 +50,7 @@ module Resque::Plugins::Later::Method
       if PerformLater.config.enabled?
         Resque::Job.create(queue, worker, self.class.name, self.id, method, *args)   
       else
-        self.send(method, args)
+        self.send(method, *args)
       end
     end
 end
