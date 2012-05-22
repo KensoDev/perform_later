@@ -7,8 +7,8 @@ module PerformLater
     AR_STRING_FORMAT    = /^AR\:([A-Z][\w\:]+)\:(\d+)$/
     YAML_STRING_FORMAT  = /\A---/
 
-    def self.args_to_resque(args)
-      args = args.map { |o|
+    def self.args_to_resque(*args)
+      args = args.flatten.map { |o|
         case o
           when ActiveRecord::Base
             "AR:#{o.class.name}:#{o.id}"
@@ -22,8 +22,8 @@ module PerformLater
       } if args
     end
     
-    def self.args_from_resque(args)
-      args = args.map { |o|
+    def self.args_from_resque(*args)
+      args = args.flatten.map { |o|
         if o
           case o
           when CLASS_STRING_FORMAT  then $1.constantize
