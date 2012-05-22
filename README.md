@@ -21,6 +21,13 @@ At [Gogobot](http://gogobot.com) whenever you post a review, there's major score
 
 The user should not wait for this on submit, it can be queued into later execution.
 
+## Installation
+gem install perform_later
+
+If you are using bundler, simply add
+`gem "perform_later"` to your Gemfile
+
+
 ## Configuration
 You can configure `perform_later` exactly as you configure your rails app.
 
@@ -98,3 +105,7 @@ If you have an issue with this gem, please open an issue in the main repo, it wi
 If you want to contribute (awesome), open a feature branch, base it on master.
 
 Be as descriptive as you can in the pull request description, just to be clear what problem you are solving or what feature are you adding.
+
+## Author
+
+Avi Tzurel ([@kensodev](http://twitter.com/kensodev)) http://www.kensodev.com
