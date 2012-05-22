@@ -33,7 +33,7 @@ In an initializer, all you need to say is whether you want perform later to be e
 
 ```ruby
 unless Rails.env.test?
-  config.later.enabled = true # this will default to false if unset
+  PerformLater.config.later.enabled = true # this will default to false if unset
 end
 ```
 
