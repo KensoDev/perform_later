@@ -97,6 +97,30 @@ If you want object methods to be queued, you will have to use the `perform_later
 	SomeClass.perform_later(:queue_name, :some_heavy_lifting_method)
 	SomeClass.perform_later(:queue_name, :some_more_heavy_lifting, user_id)
 ```
+
+## The params parser
+`perform_later` has a special class called `ArgsParser`, this class is in charge of *translating* the args you are passing into params that can actually be serialized to JSON cleanly.
+
+Examples:
+
+```ruby
+	user = User.find(1)
+	PerformLater::ArgsParser.params_to_resque(user) => AR:#User:1
+	
+	hotel = Hotel.find(1)
+	PerformLater::ArgsParser.params_to_resque(hotel) => AR:#Hotel:1
+	
+	hash = { name: "something", other: "something else" }
+	PerformLater::ArgsParser.params_to_resque(hash) 
+	=> ---
+		:name: something
+		:other: something else
+```
+
+Basically, the `ArgsParser` class allows you to keep passing any args you want to your methods without worrying about whether they serialize cleanly or not.
+
+`ArgsParser` also patched `resque-mailer` so you can pass in AR objects to mailers as well.
+
  
 ## Contribute / Bug reports
 
