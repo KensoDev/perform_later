@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'perform_later'
 
 describe Resque::Plugins::Later::Method do
   before(:each) { PerformLater.config.enabled = true }

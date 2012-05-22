@@ -1,4 +1,4 @@
-require 'perform_later/config'
+require 'spec_helper'
 
 describe PerformLater::Config do
   before(:each) { PerformLater.config.enabled = false }

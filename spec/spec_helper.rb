@@ -6,8 +6,9 @@ require "support/database_connection"
 require "support/database_models"
 require "redis"
 require 'fakeredis/rspec'
+require 'simplecov'
 
-
+SimpleCov.start
 
 RSpec.configure do |config|
   config.mock_with :rspec
