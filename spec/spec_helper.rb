@@ -7,6 +7,7 @@ require "support/database_models"
 require "redis"
 require 'fakeredis/rspec'
 require 'simplecov'
+require 'resque'
 
 SimpleCov.start
 

@@ -30,7 +30,7 @@ describe Resque::Plugins::Later::Method do
       user.lonely_long_running_method
       user.lonely_long_running_method
       user.lonely_long_running_method
-      Resque.peek(:generic, 0, 20).length.should == 1  
+      Resque.peek(:generic, 0, 20).length.should == 1
     end
   end
 
