@@ -26,12 +26,31 @@ module Resque::Plugins::Later::Method
 
   def perform_later(queue, method, *args)
     ActiveSupport::Deprecation.warn("perform_later will be deprecated in future versions, please use the later method on your models")
-    
-    if PerformLater.config.enabled?
-      args = PerformLater::ArgsParser.args_to_resque(args)
-      Resque::Job.create(queue, PerformLater::Workers::ActiveRecord::Worker, self.class.name, self.id, method, *args)
-    else
-      self.send(method, args)
-    end
+    args = PerformLater::ArgsParser.args_to_resque(args)
+    worker = PerformLater::Workers::ActiveRecord::Worker
+
+    enqueue_in_resque_or_send(worker, queue, method, args)
   end
+
+  def perform_later!(queue, method, *args)
+    ActiveSupport::Deprecation.warn("perform_later! will be deprecated in future versions, please use the later method on your models")
+
+    args = PerformLater::ArgsParser.args_to_resque(args)
+    digest = PerformLater::PayloadHelper.get_digest(self.class.name, method, args)
+    worker = PerformLater::Workers::ActiveRecord::LoneWorker
+    
+    return "AR EXISTS!" unless Resque.redis.get(digest).blank?
+    Resque.redis.set(digest, 'EXISTS')
+
+    enqueue_in_resque_or_send(worker, queue, method, args)
+  end
+
+  private 
+    def enqueue_in_resque_or_send(worker, queue, method, args)
+      if PerformLater.config.enabled?
+        Resque::Job.create(queue, worker, self.class.name, self.id, method, *args)   
+      else
+        self.send(method, args)
+      end
+    end
 end

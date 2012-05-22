@@ -18,6 +18,4 @@ describe PerformLater::PayloadHelper do
       subject.get_digest("DummyClass", :some_method, args).should == digest
     end
   end
-
-
 end

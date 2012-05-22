@@ -32,6 +32,16 @@ describe Resque::Plugins::Later::Method do
       user.lonely_long_running_method
       Resque.peek(:generic, 0, 20).length.should == 1
     end
+
+    it "should only add a single method to the queue, since the config is with a loner when using perform_later! method" do
+      user = User.create
+      user.perform_later!(:generic, :lonely_long_running_method)
+      user.perform_later!(:generic, :lonely_long_running_method)
+      user.perform_later!(:generic, :lonely_long_running_method)
+      user.perform_later!(:generic, :lonely_long_running_method)
+      user.perform_later!(:generic, :lonely_long_running_method)
+      Resque.peek(:generic, 0, 20).length.should == 1
+    end
   end
 
   context "disabled" do
@@ -47,6 +57,8 @@ describe Resque::Plugins::Later::Method do
     user.should respond_to(:long_running_method)
     user.should respond_to(:now_long_running_method)
   end
+
+
 
   
 end
