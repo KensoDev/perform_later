@@ -1,5 +1,5 @@
 module PerformLater
   class Railtie < ::Rails::Railtie
-    config.later = PerformLater::Config
+    config.perf_later = PerformLater::Config
   end
 end
