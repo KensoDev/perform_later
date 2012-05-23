@@ -14,7 +14,6 @@ describe PerformLater::PayloadHelper do
         }.to_s)
 
       args = PerformLater::ArgsParser.args_to_resque(user)
-      puts args
       subject.get_digest("DummyClass", :some_method, args).should == digest
     end
   end
