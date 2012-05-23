@@ -8,6 +8,14 @@ class DummyClass
   def self.do_something_with_string(value)
     value
   end
+
+  def self.do_something_with_user(user)
+    user
+  end
+
+  def self.do_something_with_optional_hash(options = {})
+    options.blank?
+  end
 end
 
 describe ObjectPerformLater do
@@ -40,11 +48,23 @@ describe ObjectPerformLater do
     Resque.peek(:generic, 0, 20).length.should == 1
   end
 
-  describe :perform_later! do
-    it "should pass the correct value (String)" do
+  describe :perform_later_params do
+    before(:each) do
       PerformLater.config.stub!(:enabled?).and_return(false)
+    end
+    it "should pass the correct value (String)" do
       DummyClass.should_receive(:do_something_with_string).with("Avi Tzurel")
       DummyClass.perform_later!(:generic, :do_something_with_string, "Avi Tzurel")  
+    end
+
+    it "should pass the correct value (AR object)" do
+      user = User.create
+      DummyClass.perform_later!(:generic, :do_something_with_user, user).should == user
+    end
+
+    it "should pass the correct value (optional hash)" do
+      PerformLater.config.stub!(:enabled?).and_return(false)
+      DummyClass.perform_later!(:generic, :do_something_with_optional_hash).should == true
     end
   end
 end
