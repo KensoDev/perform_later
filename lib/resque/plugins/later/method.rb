@@ -25,7 +25,6 @@ module Resque::Plugins::Later::Method
   end
 
   def perform_later(queue, method, *args)
-    ActiveSupport::Deprecation.warn("perform_later will be deprecated in future versions, please use the later method on your models")
     args = PerformLater::ArgsParser.args_to_resque(args)
     worker = PerformLater::Workers::ActiveRecord::Worker
 
@@ -33,8 +32,6 @@ module Resque::Plugins::Later::Method
   end
 
   def perform_later!(queue, method, *args)
-    ActiveSupport::Deprecation.warn("perform_later! will be deprecated in future versions, please use the later method on your models")
-
     args = PerformLater::ArgsParser.args_to_resque(args)
     digest = PerformLater::PayloadHelper.get_digest(self.class.name, method, args)
     worker = PerformLater::Workers::ActiveRecord::LoneWorker
