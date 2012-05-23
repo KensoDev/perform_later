@@ -5,6 +5,16 @@ describe PerformLater::ArgsParser do
   let(:user) { User.create }
 
   context "args to resque" do
+    it "should convert array of hashes correctly" do
+      arr = [
+        { something: "aaa" },
+        { something: "bbb" },
+        { something: "ccc" },
+        { something: "ddd" },
+        { something: "eee" }
+      ]
+      subject.args_to_resque(arr).class.should == Array
+    end
     it "should convert the AR object to the proper string" do
       user_id = user.id
 
