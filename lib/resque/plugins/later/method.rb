@@ -25,30 +25,34 @@ module Resque::Plugins::Later::Method
   end
 
   def perform_later(queue, method, *args)
-    args = PerformLater::ArgsParser.args_to_resque(args)
-    worker = PerformLater::Workers::ActiveRecord::Worker
+    return self.send(method, *args) unless PerformLater.config.enabled?
+    
 
+    worker = PerformLater::Workers::ActiveRecord::Worker
     enqueue_in_resque_or_send(worker, queue, method, args)
   end
 
   def perform_later!(queue, method, *args)
-    args = PerformLater::ArgsParser.args_to_resque(args)
-    digest = PerformLater::PayloadHelper.get_digest(self.class.name, method, args)
-    worker = PerformLater::Workers::ActiveRecord::LoneWorker
+    return self.send(method, *args) unless PerformLater.config.enabled?
+    return "AR EXISTS!" if loner_exists(method, args)
     
-    return "AR EXISTS!" unless Resque.redis.get(digest).blank?
-    Resque.redis.set(digest, 'EXISTS')
-
+    worker = PerformLater::Workers::ActiveRecord::LoneWorker
     enqueue_in_resque_or_send(worker, queue, method, args)
   end
 
   private 
+    def loner_exists(method, *args)
+      args = PerformLater::ArgsParser.args_to_resque(args)
+      digest = PerformLater::PayloadHelper.get_digest(self.class.name, method, args)
+
+      return true unless Resque.redis.get(digest).blank?
+      Resque.redis.set(digest, 'EXISTS')
+
+      return false
+    end
+
     def enqueue_in_resque_or_send(worker, queue, method, *args)
-      if PerformLater.config.enabled?
-        Resque::Job.create(queue, worker, self.class.name, self.id, method, *args)   
-      else
-        args = PerformLater::ArgsParser.args_from_resque(args)
-        self.send(method, *args)
-      end
+      args = PerformLater::ArgsParser.args_to_resque(args)
+      Resque::Job.create(queue, worker, self.class.name, self.id, method, *args)   
     end
 end
