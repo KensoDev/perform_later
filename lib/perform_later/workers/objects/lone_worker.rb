@@ -8,7 +8,12 @@ module PerformLater
           Resque.redis.del(digest)
 
           args = PerformLater::ArgsParser.args_from_resque(args)
-          klass_name.constantize.send(method, *args)
+          
+          if args.length > 0
+            klass_name.constantize.send(method, args)
+          else
+            klass_name.constantize.send(method)
+          end
         end
       end
     end

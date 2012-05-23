@@ -22,7 +22,7 @@ module PerformLater
       } if args
     end
     
-    def self.args_from_resque(*args)
+    def self.args_from_resque(args)
       args = args.flatten.map { |o|
         if o
           case o
@@ -32,7 +32,7 @@ module PerformLater
           else o
           end
         end
-      } if args
+      } if args      
     end
 
     private

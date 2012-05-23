@@ -7,7 +7,12 @@ module PerformLater
           runner_klass = eval(klass)
           
           record = runner_klass.where(:id => id).first
-          record.send(method, *args) if record
+          
+          if args.length > 0
+            record.send(method, args) if record
+          else
+            record.send(method) if record
+          end
         end
       end
     end

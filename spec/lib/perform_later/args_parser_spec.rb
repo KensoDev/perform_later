@@ -64,7 +64,7 @@ describe PerformLater::ArgsParser do
   context "args from resque" do
     it "should give me a hash back when I pass a yaml representation of it" do
       hash = { name: "something", other: "something else" }
-      yaml = hash.to_yaml
+      yaml = *hash.to_yaml
 
       args = subject.args_from_resque(yaml)
       args[0].class.name.should == "Hash"
@@ -73,7 +73,8 @@ describe PerformLater::ArgsParser do
     end
 
     it "Should give me a user model back when I pass the proper string" do
-      args = subject.args_from_resque("AR:User:#{user.id}")
+      args_input = *"AR:User:#{user.id}"
+      args = subject.args_from_resque(args_input)
       args[0].should == user
     end
   end

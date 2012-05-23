@@ -16,6 +16,10 @@ class DummyClass
   def self.do_something_with_optional_hash(options = {})
     options.blank?
   end
+
+  def self.do_something_with_array(arr)
+    arr
+  end
 end
 
 describe ObjectPerformLater do
@@ -48,6 +52,14 @@ describe ObjectPerformLater do
     Resque.peek(:generic, 0, 20).length.should == 1
   end
 
+  describe "When Enabled" do
+    it "should pass the correct valur(array)" do
+      PerformLater.config.stub!(:enabled?).and_return(true)
+      Resque::Job.should_receive(:create).with(:generic, PerformLater::Workers::Objects::Worker, "DummyClass", :do_something_with_array, [1,2,3,4,5])
+      DummyClass.perform_later(:generic, :do_something_with_array, [1,2,3,4,5])
+    end
+  end
+
   describe :perform_later do
     before(:each) do
       PerformLater.config.stub!(:enabled?).and_return(false)
@@ -64,6 +76,8 @@ describe ObjectPerformLater do
     it "should pass the correct value (optional hash)" do
       DummyClass.perform_later(:generic, :do_something_with_optional_hash).should == true
     end
+
+
   end
 
   describe :perform_later! do

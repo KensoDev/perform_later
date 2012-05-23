@@ -53,6 +53,6 @@ module Resque::Plugins::Later::Method
 
     def enqueue_in_resque_or_send(worker, queue, method, *args)
       args = PerformLater::ArgsParser.args_to_resque(args)
-      Resque::Job.create(queue, worker, self.class.name, self.id, method, *args)   
+      Resque::Job.create(queue, worker, self.class.name, self.id, method, args)   
     end
 end
