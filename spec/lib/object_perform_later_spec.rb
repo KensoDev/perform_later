@@ -48,13 +48,30 @@ describe ObjectPerformLater do
     Resque.peek(:generic, 0, 20).length.should == 1
   end
 
-  describe :perform_later_params do
+  describe :perform_later do
     before(:each) do
       PerformLater.config.stub!(:enabled?).and_return(false)
     end
     it "should pass the correct value (String)" do
-      DummyClass.should_receive(:do_something_with_string).with("Avi Tzurel")
-      DummyClass.perform_later!(:generic, :do_something_with_string, "Avi Tzurel")  
+      DummyClass.perform_later(:generic, :do_something_with_string, "Avi Tzurel").should == "Avi Tzurel"
+    end
+
+    it "should pass the correct value (AR object)" do
+      user = User.create
+      DummyClass.perform_later(:generic, :do_something_with_user, user).should == user
+    end
+
+    it "should pass the correct value (optional hash)" do
+      DummyClass.perform_later(:generic, :do_something_with_optional_hash).should == true
+    end
+  end
+
+  describe :perform_later! do
+    before(:each) do
+      PerformLater.config.stub!(:enabled?).and_return(false)
+    end
+    it "should pass the correct value (String)" do
+      DummyClass.perform_later!(:generic, :do_something_with_string, "Avi Tzurel").should == "Avi Tzurel"
     end
 
     it "should pass the correct value (AR object)" do
@@ -63,7 +80,6 @@ describe ObjectPerformLater do
     end
 
     it "should pass the correct value (optional hash)" do
-      PerformLater.config.stub!(:enabled?).and_return(false)
       DummyClass.perform_later!(:generic, :do_something_with_optional_hash).should == true
     end
   end
