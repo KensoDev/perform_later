@@ -9,10 +9,9 @@ class DummyClass
     true
   end
 
-  def self.do_something_with_user(user)
-    user
+  def self.identity_function(data)
+    data
   end
-
 end
 
 describe PerformLater::Workers::Objects::Worker do
@@ -34,12 +33,18 @@ describe PerformLater::Workers::Objects::Worker do
   it "should pass a single argument (user)" do
     user = User.create
     args = PerformLater::ArgsParser.args_to_resque(user)
-    subject.perform("DummyClass", :do_something_with_user, args).should == user
+    subject.perform("DummyClass", :identity_function, args).should == user
   end
 
   it "should pass an array with one entry" do
     users = [User.create]
     args = PerformLater::ArgsParser.args_to_resque(users)
-    subject.perform("DummyClass", :do_something_with_user, args).should == users
+    subject.perform("DummyClass", :identity_function, args).should == users
+  end
+
+  it "should pass multi dimension arrays" do
+    data = [1, 2, User.create, ["a", "b", "c"]]
+    args = PerformLater::ArgsParser.args_to_resque(data)
+    subject.perform("DummyClass", :identity_function, args).should == data
   end
 end
