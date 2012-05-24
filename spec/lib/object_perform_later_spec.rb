@@ -53,7 +53,7 @@ describe ObjectPerformLater do
   end
 
   describe "When Enabled" do
-    it "should pass the correct valur(array)" do
+    it "should pass the correct value (array)" do
       PerformLater.config.stub!(:enabled?).and_return(true)
       Resque::Job.should_receive(:create).with(:generic, PerformLater::Workers::Objects::Worker, "DummyClass", :do_something_with_array, [1,2,3,4,5])
       DummyClass.perform_later(:generic, :do_something_with_array, [1,2,3,4,5])
@@ -64,6 +64,7 @@ describe ObjectPerformLater do
     before(:each) do
       PerformLater.config.stub!(:enabled?).and_return(false)
     end
+    
     it "should pass the correct value (String)" do
       DummyClass.perform_later(:generic, :do_something_with_string, "Avi Tzurel").should == "Avi Tzurel"
     end

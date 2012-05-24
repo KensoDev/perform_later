@@ -35,8 +35,7 @@ describe PerformLater::ArgsParser do
     it "should convert the AR object to the proper string" do
       user_id = user.id
 
-      subject.args_to_resque(user).length.should == 1
-      subject.args_to_resque(user)[0].should == "AR:User:#{user_id}"
+      subject.args_to_resque(user).should == "AR:User:#{user_id}"
     end
 
     it "should convert a hash into YAML string so that Resque will be able to JSON convert it" do
@@ -46,17 +45,17 @@ describe PerformLater::ArgsParser do
 
     it "should be able to load a yaml from the string and translate it into the same hash again" do
       hash = { name: "something", other: "something else" }
-      yaml = subject.args_to_resque(hash)[0]
+      yaml = subject.args_to_resque(hash)
 
       loaded_yaml = YAML.load(yaml)
-      
+
       loaded_yaml[:name].should == "something"
       loaded_yaml[:other].should == "something else"
     end
 
     it "should convert a class to the proper string representation" do
       klass = User
-      subject.args_to_resque(klass)[0].should == "CLASS:User"
+      subject.args_to_resque(klass).should == "CLASS:User"
     end
   end
 

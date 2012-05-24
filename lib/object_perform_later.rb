@@ -1,13 +1,13 @@
 module ObjectPerformLater
   def perform_later(queue, method, *args)
-    return self.send(method, *args) unless PerformLater.config.enabled?
+    return args.size == 1 ? send(method, args.first) : send(method, args) unless PerformLater.config.enabled?
 
     worker = PerformLater::Workers::Objects::Worker
     perform_later_enqueue(worker, queue, method, args)
   end
 
   def perform_later!(queue, method, *args)
-    return self.send(method, *args) unless PerformLater.config.enabled?
+    return args.size == 1 ? send(method, args.first) : send(method, args) unless PerformLater.config.enabled?
 
     return "EXISTS!" if loner_exists(method, args)
 
@@ -24,9 +24,11 @@ module ObjectPerformLater
       return false
     end
 
-    def perform_later_enqueue(worker, queue, method, *args)
+    def perform_later_enqueue(worker, queue, method, args)
       args = PerformLater::ArgsParser.args_to_resque(args)
-      Resque::Job.create(queue, worker, self.name, method, args)
+      argument = args.size == 1 ? args.first : args
+      
+      Resque::Job.create(queue, worker, self.name, method, argument)
     end
 end
 
