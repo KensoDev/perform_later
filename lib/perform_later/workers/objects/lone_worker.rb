@@ -10,7 +10,7 @@ module PerformLater
           args = PerformLater::ArgsParser.args_from_resque(args)
           
           if args.length > 0
-            klass_name.constantize.send(method, args)
+            klass_name.constantize.send(method, *args)
           else
             klass_name.constantize.send(method)
           end

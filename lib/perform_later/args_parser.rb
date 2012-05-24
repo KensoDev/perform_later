@@ -1,7 +1,7 @@
+require 'json'
+
 module PerformLater
   class ArgsParser
-    APP_ROOT = File.expand_path((defined?(Rails) && Rails.root.to_s.length > 0) ? Rails.root : ".") unless defined?(APP_ROOT)
-
     # inspired by DelayedJob
     CLASS_STRING_FORMAT = /^CLASS\:([A-Z][\w\:]+)$/
     AR_STRING_FORMAT    = /^AR\:([A-Z][\w\:]+)\:(\d+)$/
@@ -34,16 +34,5 @@ module PerformLater
         end
       } if args      
     end
-
-    private
-      def self.env_str
-        if defined? Rails
-          Rails.env.to_s
-        elsif defined? Rack
-          Rack.env.to_s
-        else
-          'production'
-        end
-      end
   end
 end

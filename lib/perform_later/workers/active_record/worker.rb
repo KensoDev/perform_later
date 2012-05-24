@@ -9,7 +9,7 @@ module PerformLater
           record = runner_klass.where(:id => id).first
           
           if args.length > 0
-            record.send(method, args) if record
+            record.send(method, *args) if record
           else
             record.send(method) if record
           end

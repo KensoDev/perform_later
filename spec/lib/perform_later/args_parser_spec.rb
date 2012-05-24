@@ -26,7 +26,6 @@ describe PerformLater::ArgsParser do
         { something: "eee" }
       ]
       to_resque = subject.args_to_resque(arr).to_json
-      puts to_resque
       a = JSON.parse(to_resque)
       from_resque = subject.args_from_resque(a)
       
