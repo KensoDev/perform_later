@@ -12,6 +12,10 @@ class DummyClass
   def self.identity_function(data)
     data
   end
+
+  def join(arg1, arg2)
+    "#{arg1}, #{arg2}"
+  end
 end
 
 describe PerformLater::Workers::Objects::Worker do

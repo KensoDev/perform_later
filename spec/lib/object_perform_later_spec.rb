@@ -13,6 +13,10 @@ class DummyClass
     user
   end
 
+  def self.do_something_with_multiple_args(a, b)
+    "#{a}, #{b}"
+  end
+
   def self.do_something_with_optional_hash(options = {})
     options.blank?
   end
@@ -58,6 +62,12 @@ describe ObjectPerformLater do
       Resque::Job.should_receive(:create).with(:generic, PerformLater::Workers::Objects::Worker, "DummyClass", :do_something_with_array, [1,2,3,4,5])
       DummyClass.perform_later(:generic, :do_something_with_array, [1,2,3,4,5])
     end
+
+    it "should pass multiple args" do
+      PerformLater.config.stub!(:enabled?).and_return(true)
+      Resque::Job.should_receive(:create).with(:generic, PerformLater::Workers::Objects::Worker, "DummyClass", :do_something_with_multiple_args, 1, 2)
+      DummyClass.perform_later(:generic, :do_something_with_multiple_args, 1, 2)
+    end
   end
 
   describe :perform_later do
@@ -78,7 +88,9 @@ describe ObjectPerformLater do
       DummyClass.perform_later(:generic, :do_something_with_optional_hash).should == true
     end
 
-
+    it "should pass multiple args" do
+      DummyClass.perform_later(:generic, :do_something_with_multiple_args, 1, 2).should == "1, 2"
+    end
   end
 
   describe :perform_later! do
@@ -96,6 +108,10 @@ describe ObjectPerformLater do
 
     it "should pass the correct value (optional hash)" do
       DummyClass.perform_later!(:generic, :do_something_with_optional_hash).should == true
+    end
+
+    it "should pass multiple args" do
+      DummyClass.perform_later!(:generic, :do_something_with_multiple_args, 1, 2).should == "1, 2"
     end
   end
 end
