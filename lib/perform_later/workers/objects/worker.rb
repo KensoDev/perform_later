@@ -3,10 +3,11 @@ module PerformLater
     module Objects
       class Worker
         def self.perform(klass_name, method, *args)
-          args = PerformLater::ArgsParser.args_from_resque(args)
+          arguments = PerformLater::ArgsParser.args_from_resque(args)
 
-          if args.length > 0
-            klass_name.constantize.send(method, *args)
+          if arguments.any?
+            argument =  arguments.size == 1 ? arguments.first : arguments
+            klass_name.constantize.send(method, argument)
           else
             klass_name.constantize.send(method)
           end
