@@ -6,8 +6,11 @@ module PerformLater
           arguments = PerformLater::ArgsParser.args_from_resque(args)
 
           if arguments.any?
-            argument =  arguments.size == 1 ? arguments.first : arguments
-            klass_name.constantize.send(method, argument)
+            if arguments.size == 1
+              klass_name.constantize.send(method, arguments.first)
+            else
+              klass_name.constantize.send(method, *arguments)
+            end
           else
             klass_name.constantize.send(method)
           end

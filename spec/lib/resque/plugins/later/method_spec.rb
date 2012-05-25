@@ -52,6 +52,20 @@ describe Resque::Plugins::Later::Method do
     end
   end
 
+  context 'arguments to Resque' do
+    it 'should send no args to resque' do
+      user = User.create
+      Resque::Job.should_receive(:create).with(:generic, PerformLater::Workers::ActiveRecord::Worker, 'User', user.id, :lonely_long_running_method)
+      user.perform_later(:generic, :lonely_long_running_method)
+    end
+
+    it 'should send 1 arg to resque' do
+      user = User.create
+      Resque::Job.should_receive(:create).with(:generic, PerformLater::Workers::ActiveRecord::LoneWorker, 'User', user.id, :lonely_long_running_method, 1)
+      user.perform_later!(:generic, :lonely_long_running_method, 1)
+    end
+  end
+
   it "shold define the correct method on the user model" do
     user = User.create
     user.should respond_to(:long_running_method)
@@ -73,8 +87,4 @@ describe Resque::Plugins::Later::Method do
        user.perform_later!(:generic, :method_with_integer_option, 1)
     end 
   end
-
-
-
-  
 end

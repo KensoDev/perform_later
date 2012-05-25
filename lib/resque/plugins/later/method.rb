@@ -19,7 +19,7 @@ module Resque::Plugins::Later::Method
           Resque.redis.set(digest, 'EXISTS')
         end
         
-        Resque::Job.create(queue, klass, send(:class).name, send(:id), "now_#{method_name}", args)
+        Resque::Job.create(queue, klass, send(:class).name, send(:id), "now_#{method_name}", *args)
       end
     end
   end
@@ -41,7 +41,7 @@ module Resque::Plugins::Later::Method
   end
 
   private 
-    def loner_exists(method, *args)
+    def loner_exists(method, args)
       args = PerformLater::ArgsParser.args_to_resque(args)
       digest = PerformLater::PayloadHelper.get_digest(self.class.name, method, args)
 
@@ -51,8 +51,8 @@ module Resque::Plugins::Later::Method
       return false
     end
 
-    def enqueue_in_resque_or_send(worker, queue, method, *args)
+    def enqueue_in_resque_or_send(worker, queue, method, args)
       args = PerformLater::ArgsParser.args_to_resque(args)
-      Resque::Job.create(queue, worker, self.class.name, self.id, method, args)   
+      Resque::Job.create(queue, worker, self.class.name, self.id, method, *args)
     end
 end
