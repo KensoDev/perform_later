@@ -57,6 +57,12 @@ describe ObjectPerformLater do
   end
 
   describe "When Enabled" do
+    it "should pass no values" do
+      PerformLater.config.stub!(:enabled?).and_return(true)
+      Resque::Job.should_receive(:create).with(:generic, PerformLater::Workers::Objects::Worker, "DummyClass", :do_something_with_array)
+      DummyClass.perform_later(:generic, :do_something_with_array)
+    end
+
     it "should pass the correct value (array)" do
       PerformLater.config.stub!(:enabled?).and_return(true)
       Resque::Job.should_receive(:create).with(:generic, PerformLater::Workers::Objects::Worker, "DummyClass", :do_something_with_array, [1,2,3,4,5])
@@ -67,6 +73,13 @@ describe ObjectPerformLater do
       PerformLater.config.stub!(:enabled?).and_return(true)
       Resque::Job.should_receive(:create).with(:generic, PerformLater::Workers::Objects::Worker, "DummyClass", :do_something_with_multiple_args, 1, 2)
       DummyClass.perform_later(:generic, :do_something_with_multiple_args, 1, 2)
+    end
+
+    it "should pass AR and hash" do
+      u = User.create
+      PerformLater.config.stub!(:enabled?).and_return(true)
+      Resque::Job.should_receive(:create).with(:generic, PerformLater::Workers::Objects::Worker, "DummyClass", :do_something_with_multiple_args, "AR:User:2", "---\n:a: 2\n")
+      DummyClass.perform_later(:generic, :do_something_with_multiple_args, u, {a: 2})
     end
   end
 
@@ -91,6 +104,11 @@ describe ObjectPerformLater do
     it "should pass multiple args" do
       DummyClass.perform_later(:generic, :do_something_with_multiple_args, 1, 2).should == "1, 2"
     end
+
+    it "should pass AR and hash" do
+      u = User.create
+      DummyClass.perform_later(:generic, :do_something_with_multiple_args, u, {a: 2}).should == "#{u}, {:a=>2}"
+    end
   end
 
   describe :perform_later! do
@@ -112,6 +130,11 @@ describe ObjectPerformLater do
 
     it "should pass multiple args" do
       DummyClass.perform_later!(:generic, :do_something_with_multiple_args, 1, 2).should == "1, 2"
+    end
+
+    it "should pass AR and hash" do
+      u = User.create
+      DummyClass.perform_later!(:generic, :do_something_with_multiple_args, u, {a: 2}).should == "#{u}, {:a=>2}"
     end
   end
 end
