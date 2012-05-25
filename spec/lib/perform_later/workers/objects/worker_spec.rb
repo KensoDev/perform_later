@@ -40,6 +40,14 @@ describe PerformLater::Workers::Objects::Worker do
     subject.perform("DummyClass", :identity_function, args).should == user
   end
 
+  it "should pass a single argument (user) when translated args are passed in" do
+    pending("This specs shows the problem with the slave database that's returning nil")
+    user = User.create
+    user_arg = "AR:User:#{user.id}"
+    arguments = PerformLater::ArgsParser.should_receive(:args_from_resque).with([user_arg]).and_return([])
+    subject.perform("DummyClass", :identity_function, user_arg).should == nil
+  end
+
   it "should pass an array with one entry" do
     users = [User.create]
     args = PerformLater::ArgsParser.args_to_resque(users)
