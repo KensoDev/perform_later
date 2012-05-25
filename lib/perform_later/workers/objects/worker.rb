@@ -1,7 +1,7 @@
 module PerformLater
   module Workers
     module Objects
-      class Worker < PerformLater::Workers::BaseWorker
+      class Worker < PerformLater::Workers::Base
         def self.perform(klass_name, method, *args)
           arguments = PerformLater::ArgsParser.args_from_resque(args)
 

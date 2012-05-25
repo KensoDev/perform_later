@@ -1,7 +1,7 @@
 module PerformLater
   module Workers
     module Objects
-      class LoneWorker < PerformLater::Workers::BaseWorker
+      class LoneWorker < PerformLater::Workers::Base
         def self.perform(klass_name, method, *args)
           digest = PerformLater::PayloadHelper.get_digest(klass_name, method, args)
           Resque.redis.del(digest)
