@@ -1,7 +1,7 @@
 module PerformLater
   module Workers
     module ActiveRecord
-      class LoneWorker
+      class LoneWorker < PerformLater::Workers::BaseWorker
         def self.perform(klass, id, method, *args)
           # Remove the loner flag from redis
           digest = PerformLater::PayloadHelper.get_digest(klass, method, args)
@@ -11,12 +11,8 @@ module PerformLater
           runner_klass = eval(klass)
           
           record = runner_klass.where(:id => id).first
-          
-          if args.length > 0
-            record.send(method, *args) if record
-          else
-            record.send(method) if record
-          end
+
+          perform_job(record, method, args)
         end
       end
     end

@@ -1,19 +1,11 @@
 module PerformLater
   module Workers
     module Objects
-      class Worker
+      class Worker < PerformLater::Workers::BaseWorker
         def self.perform(klass_name, method, *args)
           arguments = PerformLater::ArgsParser.args_from_resque(args)
 
-          unless arguments.empty?
-            if arguments.size == 1
-              klass_name.constantize.send(method, arguments.first)
-            else
-              klass_name.constantize.send(method, *arguments)
-            end
-          else
-            klass_name.constantize.send(method)
-          end
+          perform_job(klass_name.constantize, method, arguments)
         end
       end
     end
