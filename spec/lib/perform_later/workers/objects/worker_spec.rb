@@ -13,8 +13,8 @@ class DummyClass
     data
   end
 
-  def join(arg1, arg2)
-    "#{arg1}, #{arg2}"
+  def self.join(arg1, arg2)
+    "#{arg1}|#{arg2}"
   end
 end
 
@@ -50,5 +50,16 @@ describe PerformLater::Workers::Objects::Worker do
     data = [1, 2, User.create, ["a", "b", "c"]]
     args = PerformLater::ArgsParser.args_to_resque(data)
     subject.perform("DummyClass", :identity_function, args).should == data
+  end
+
+  it 'should pass AR and hash' do
+    user = User.create
+    arr = {
+        something_a: "aaa",
+        something_b: "bbb"
+      }
+    arg1 = PerformLater::ArgsParser.args_to_resque(user)
+    arg2 = PerformLater::ArgsParser.args_to_resque(arr)
+    subject.perform("DummyClass", :join, arg1, arg2).split("|")[1].should == "{:something_a=>\"aaa\", :something_b=>\"bbb\"}"
   end
 end
