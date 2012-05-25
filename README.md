@@ -145,7 +145,8 @@ Avi Tzurel ([@kensodev](http://twitter.com/kensodev)) http://www.kensodev.com
 
 ## Contributors
 
-Felipe Lima ([@felipecsl](http://twitter.com/felipecsl)) 
+* Felipe Lima ([@felipecsl](http://twitter.com/felipecsl)) 
 http://blog.felipel.com/
+
 Felipe did awesome work on making sure `perform_later` can work with any args and any number of args passed into the methods.
 Felipe now has commit rights to the repo.
