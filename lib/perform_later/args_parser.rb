@@ -24,7 +24,7 @@ module PerformLater
           else o
           end
         end
-      } if args      
+      } if args
     end
 
   private

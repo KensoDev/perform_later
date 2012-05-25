@@ -5,7 +5,7 @@ module PerformLater
         def self.perform(klass_name, method, *args)
           arguments = PerformLater::ArgsParser.args_from_resque(args)
 
-          if arguments.any?
+          unless arguments.empty?
             if arguments.size == 1
               klass_name.constantize.send(method, arguments.first)
             else

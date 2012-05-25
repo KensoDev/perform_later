@@ -41,10 +41,9 @@ describe PerformLater::Workers::Objects::Worker do
   end
 
   it "should pass a single argument (user) when translated args are passed in" do
-    pending("This specs shows the problem with the slave database that's returning nil")
     user = User.create
     user_arg = "AR:User:#{user.id}"
-    arguments = PerformLater::ArgsParser.should_receive(:args_from_resque).with([user_arg]).and_return([])
+    User.should_receive(:find_by_id).with(user.id.to_s).and_return nil
     subject.perform("DummyClass", :identity_function, user_arg).should == nil
   end
 
