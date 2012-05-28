@@ -43,7 +43,9 @@ describe PerformLater::Workers::Objects::Worker do
   it "should pass a single argument (user) when translated args are passed in" do
     user = User.create
     user_arg = "AR:User:#{user.id}"
-    User.should_receive(:find_by_id).with(user.id.to_s).and_return nil
+    mock_user = double(:user, first: nil)
+    User.should_receive(:where).with(id: user.id.to_s).and_return { mock_user }
+    
     subject.perform("DummyClass", :identity_function, user_arg).should == nil
   end
 

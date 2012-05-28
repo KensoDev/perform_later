@@ -21,7 +21,7 @@ module PerformLater
             when CLASS_STRING_FORMAT
               $1.constantize
             when AR_STRING_FORMAT
-              $1.constantize.find_by_id($2)
+              $1.constantize.where(id: $2).first
             when YAML_STRING_FORMAT
               YAML.load(o)
             else 
