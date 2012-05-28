@@ -150,6 +150,12 @@ So, I added support for custom finders.
 	end
 ```
 
+Then in an initializer
+
+```ruby
+	PerformLater::Plugins.add_finder(CustomFinder)
+```
+
 So, at Gogobot for example, we will fall back to master if the record was not found on the slave DB.
 
  
