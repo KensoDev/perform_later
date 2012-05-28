@@ -156,6 +156,12 @@ Then in an initializer
 	PerformLater::Plugins.add_finder(CustomFinder)
 ```
 
+You can also remove the finder in runtime
+
+```ruby
+	PerformLater::Plugins.clear_finder!
+```
+
 So, at Gogobot for example, we will fall back to master if the record was not found on the slave DB.
 
  
