@@ -18,10 +18,14 @@ module PerformLater
         if o
           o = args_from_resque(o) if o.is_a?(Array)
           case o
-          when CLASS_STRING_FORMAT  then $1.constantize
-          when AR_STRING_FORMAT     then $1.constantize.find_by_id($2)
-          when YAML_STRING_FORMAT   then YAML.load(o)
-          else o
+            when CLASS_STRING_FORMAT
+              $1.constantize
+            when AR_STRING_FORMAT
+              $1.constantize.find_by_id($2)
+            when YAML_STRING_FORMAT
+              YAML.load(o)
+            else 
+              o
           end
         end
       } if args
