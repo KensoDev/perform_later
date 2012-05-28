@@ -27,6 +27,7 @@ RSpec.configure do |config|
   end
 
   config.after(:each) do
+    PerformLater::Plugins.clear_finder!
     $redis.flushdb
   end
 end

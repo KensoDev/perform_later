@@ -9,5 +9,9 @@ module PerformLater
         @@finder_class = klass
       end
     end
+
+    def self.clear_finder!
+      @@finder_class = nil
+    end
   end
 end

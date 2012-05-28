@@ -1,8 +1,25 @@
 require 'spec_helper'
 
+class CustomFinder 
+  def self.find(klass, id)
+    klass.find(id)
+  end
+end
+
 describe PerformLater::ArgsParser do
   subject { PerformLater::ArgsParser }
   let(:user) { User.create }
+
+  context "Custom finder" do
+    it "should invoke the custom class finder method" do
+      CustomFinder.should_receive(:find).with(User, user.id.to_s)
+      PerformLater::Plugins.add_finder(CustomFinder)
+      
+      subject.args_from_resque(["AR:User:#{user.id}"])
+
+      PerformLater::Plugins.clear_finder!
+    end
+  end
 
   context "args to resque" do
 

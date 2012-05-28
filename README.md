@@ -130,6 +130,28 @@ Basically, the `ArgsParser` class allows you to keep passing any args you want t
 
 `ArgsParser` also patched `resque-mailer` so you can pass in AR objects to mailers as well.
 
+## The custom finder
+I found the need to add a custom finder to the args parser.
+
+### Why?
+At Gogobot for example, we use slave databases, those sometimes have lag, so when the finder is executed it returns nil, even though the record is actually on the master.
+
+So, I added support for custom finders.
+
+#### Example:
+
+```ruby
+	class CustomFinder
+		def self.find(klass, id)
+			Octopus.using(:master) {
+				klass.where(id: id).first
+			} unless klass.where(id: id).first
+		end
+	end
+```
+
+So, at Gogobot for example, we will fall back to master if the record was not found on the slave DB.
+
  
 ## Contribute / Bug reports
 

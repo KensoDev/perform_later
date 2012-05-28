@@ -21,7 +21,14 @@ module PerformLater
             when CLASS_STRING_FORMAT
               $1.constantize
             when AR_STRING_FORMAT
-              $1.constantize.where(id: $2).first
+              runner_class = $1.constantize
+              id = $2
+
+              if PerformLater::Plugins.finder_class
+                PerformLater::Plugins.finder_class.find(runner_class, id)
+              else
+                runner_class.where(id: id).first  
+              end
             when YAML_STRING_FORMAT
               YAML.load(o)
             else 
