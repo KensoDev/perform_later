@@ -12,6 +12,7 @@ describe PerformLater::PayloadHelper do
         :method => :some_method.to_s, 
         :args => ["AR:User:#{user.id}"]
         }.to_s)
+      digest = "loner:#{digest}"
 
       args = PerformLater::ArgsParser.args_to_resque(user)
       subject.get_digest("DummyClass", :some_method, args).should == digest
