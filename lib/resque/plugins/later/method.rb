@@ -36,7 +36,7 @@ module Resque::Plugins::Later::Method
   end
 
   def perform_later!(queue, method, *args)
-    return perfrom_now(method, args) if plugin_disabled?
+    return perform_now(method, args) if plugin_disabled?
     return "AR EXISTS!" if loner_exists(method, args)
     
     worker  = PerformLater::Workers::ActiveRecord::LoneWorker
@@ -82,7 +82,7 @@ module Resque::Plugins::Later::Method
       !PerformLater.config.enabled?
     end
 
-    def perfrom_now(method, args)
+    def perform_now(method, args)
       return self.send(method, *args)
     end
 end
