@@ -87,4 +87,31 @@ describe Resque::Plugins::Later::Method do
        user.perform_later!(:generic, :method_with_integer_option, 1)
     end 
   end
+
+  context "delay" do
+    
+    let(:enqueue_in) {5}
+    let(:actual_enqueue) {Time.now + enqueue_in}
+
+    before(:each) do
+      PerformLater.config.stub!(:enabled?).and_return(true)    
+      User.later :delayed_long_running_method, :delay => enqueue_in
+    end
+
+    describe :delay do
+      it "should delay enqueuing for the duration of time given, if delay time is given" do
+        user = User.create
+        user.delayed_long_running_method
+        Resque.redis.llen("delayed:#{actual_enqueue.to_i}").should == 1
+      end
+    end
+
+    describe :perform_later_in do
+      it "should delay enqueuing for the duration of delay time given" do
+        user = User.create
+        user.perform_later_in(enqueue_in, :generic, :delayed_long_running_method)
+        Resque.redis.llen("delayed:#{actual_enqueue.to_i}").should == 1
+      end
+    end
+  end
 end
