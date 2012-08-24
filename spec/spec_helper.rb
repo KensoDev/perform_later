@@ -8,6 +8,7 @@ require "redis"
 require 'fakeredis/rspec'
 require 'simplecov'
 require 'resque'
+require 'resque_scheduler'
 
 SimpleCov.start
 
