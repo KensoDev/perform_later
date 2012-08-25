@@ -11,8 +11,8 @@ describe PerformLater::Job do
         Resque.should_receive(:enqueue_in_with_queue)
         job.enqueue delay: delay
       end
-  end
-    context "without :delay option"
+    end
+    context "without :delay option" do
       it "should create a regular resque job if delay option isn't given" do
         Resque::Job.should_receive(:create)
         job.enqueue
