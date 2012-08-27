@@ -20,7 +20,8 @@ module Resque::Plugins::Later::Method
           Resque.redis.set(digest, 'EXISTS')
         end
 
-        PerformLater::Job.new(queue, klass, send(:class).name, send(:id), "now_#{method_name}", *args).enqueue :delay => delay
+        job = PerformLater::JobCreator.new(queue, klass, send(:class).name, send(:id), "now_#{method_name}", *args)
+        job.enqueue(delay)
       end
     end
 
@@ -30,8 +31,7 @@ module Resque::Plugins::Later::Method
     return perform_now(method, args) if plugin_disabled?
 
     worker  = PerformLater::Workers::ActiveRecord::Worker
-    job     = PerformLater::Job.new(queue, worker, self.class.name, self.id, method, *args) 
-
+    job     = PerformLater::JobCreator.new(queue, worker, self.class.name, self.id, method, *args) 
     enqueue_in_resque_or_send(job)
   end
 
@@ -40,7 +40,7 @@ module Resque::Plugins::Later::Method
     return "AR EXISTS!" if loner_exists(method, args)
     
     worker  = PerformLater::Workers::ActiveRecord::LoneWorker
-    job     = PerformLater::Job.new(queue, worker, self.class.name, self.id, method, *args) 
+    job     = PerformLater::JobCreator.new(queue, worker, self.class.name, self.id, method, *args) 
     enqueue_in_resque_or_send(job)
   end
 
@@ -48,16 +48,16 @@ module Resque::Plugins::Later::Method
     return perform_now(method, args) if plugin_disabled?
 
     worker  = PerformLater::Workers::ActiveRecord::Worker
-    job     = PerformLater::Job.new(queue, worker, self.class.name, self.id, method, *args) 
-    enqueue_in_resque_or_send(job, delay: delay)
+    job     = PerformLater::JobCreator.new(queue, worker, self.class.name, self.id, method, *args) 
+    enqueue_in_resque_or_send(job, delay)
   end
   
   def perform_later_in!(delay, queue, method, *args)
     return  perform_now(method, args) if plugin_disabled?
 
     worker  = PerformLater::Workers::ActiveRecord::LoneWorker
-    job     = PerformLater::Job.new(queue, worker, self.class.name, self.id, method, *args) 
-    enqueue_in_resque_or_send(job)
+    job     = PerformLater::JobCreator.new(queue, worker, self.class.name, self.id, method, *args) 
+    enqueue_in_resque_or_send(job, delay)
   end
 
 
@@ -73,9 +73,9 @@ module Resque::Plugins::Later::Method
       return false
     end
 
-    def enqueue_in_resque_or_send(job, opts={})
+    def enqueue_in_resque_or_send(job, delay=nil)
       job.args = PerformLater::ArgsParser.args_to_resque(job.args)
-      job.enqueue(opts)
+      job.enqueue(delay)
     end
         
     def plugin_disabled?
