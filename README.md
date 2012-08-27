@@ -61,6 +61,11 @@ end
 	    # Your code here
 	  end
 	  later :lonely_long_running_method, :loner => true, queue: :some_queue_name
+
+    def delayed_long_running_method
+      # Your code here
+    end
+    later :delayed_long_running_method, :delay => 30, queue: :some_queue_name
 	end
 	
 ```
@@ -70,6 +75,7 @@ end
 	u.long_running_method # Method will be queued into the :generic queue
 	u.long_running_method_2 # Method will be queued into :some_queue_name queue
 	u.lonely_long_running_method # Method will be queued into the :some_queue_name queue, only a single instance of this method can exist in the queue.
+  u.delayed_long_running_method # Method will be queued into :some_queue_name queue only after 30 seconds have passed.
 ```
 
 You can of course choose to run the method off the queue, just prepend `now_` to the method name and it will be executed in sync.
