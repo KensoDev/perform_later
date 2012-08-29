@@ -57,6 +57,8 @@ describe ObjectPerformLater do
   end
 
   describe "When Enabled" do
+    let(:user) { User.create }
+
     it "should pass no values" do
       PerformLater.config.stub!(:enabled?).and_return(true)
       Resque::Job.should_receive(:create).with(:generic, PerformLater::Workers::Objects::Worker, "DummyClass", :do_something_with_array)
@@ -76,10 +78,9 @@ describe ObjectPerformLater do
     end
 
     it "should pass AR and hash" do
-      u = User.create
       PerformLater.config.stub!(:enabled?).and_return(true)
-      Resque::Job.should_receive(:create).with(:generic, PerformLater::Workers::Objects::Worker, "DummyClass", :do_something_with_multiple_args, "AR:User:2", "---\n:a: 2\n")
-      DummyClass.perform_later(:generic, :do_something_with_multiple_args, u, {a: 2})
+      Resque::Job.should_receive(:create).with(:generic, PerformLater::Workers::Objects::Worker, "DummyClass", :do_something_with_multiple_args, "AR:User:#{user.id}", "---\n:a: 2\n")
+      DummyClass.perform_later(:generic, :do_something_with_multiple_args, user, {a: 2})
     end
   end
 
