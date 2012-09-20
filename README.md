@@ -87,15 +87,15 @@ You can of course choose to run the method off the queue, just prepend `now_` to
 
 ### Objects/Classes
 
-If you want object methods to be queued, you will have to use the `perform_later` special method.
+If you want class methods to be queued, you will have to use the `perform_later` special method.
 
 ```ruby
 	class SomeClass
-		def some_heavy_lifting_method
+		def self.some_heavy_lifting_method
 	  	  # Your code here
 	  	end
 	  	
-		def some_more_heavy_lifting(user_id)
+		def self.some_more_heavy_lifting(user_id)
 	  	  # Your code here
 	  	end  	
 	end
