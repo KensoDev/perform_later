@@ -1,5 +1,17 @@
 [![Build Status](https://secure.travis-ci.org/KensoDev/perform_later.png)](https://secure.travis-ci.org/KensoDev/perform_later)
 
+# No longer supported notice
+
+If you plan on using this gem, please note that I am no longer maintaining it, plan to realeasing new versions or support bugs.
+
+Feel free to fork the project and do as you see fit with it.
+
+The reason for this is because I am not using Resque for a very long time now. I am using Sidekiq (and so should you).
+
+## Perform later for sidekiq?
+
+Yes, I have a version for sidekiq it's called [Kiqit](https://github.com/kensodev/kiqit) and you can find it here https://github.com/kensodev/kiqit
+
 ## Overview
 Perform later is a gem meant to work with the [Resque](http://github.com/defunkt/resque) queue system.
 
